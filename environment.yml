@@ -1,0 +1,9 @@
+name: revenue-maximization-ranking
+
+channels:
+  - conda-forge
+
+dependencies:
+  - jupyterlab
+  - python=3.7
+  - scipy=1.7
