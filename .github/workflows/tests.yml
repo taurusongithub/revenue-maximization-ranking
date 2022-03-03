@@ -1,0 +1,20 @@
+name: Testing
+
+on:
+  - pull_request
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up conda environment
+        run: conda env create -f ./environment.yml
+      - name: Update pip
+        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade pip
+      - name: Install dependencies with pip
+        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install -r requirements.txt
+      - name: Running unit tests
+        run: |
+          cd src/
+          $CONDA/envs/revenue_maximization_ranking/bin/python -m unittest discover -v -s tests
