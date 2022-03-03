@@ -11,10 +11,10 @@ jobs:
       - name: Set up conda environment
         run: conda env create -f ./environment.yml
       - name: Update pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade pip
       - name: Install dependencies with pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install -r requirements.txt
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install -r requirements.txt
       - name: Running unit tests
         run: |
           cd src/
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m unittest discover -v -s tests
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m unittest discover -v -s tests

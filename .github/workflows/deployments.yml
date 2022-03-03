@@ -14,7 +14,7 @@ jobs:
       - name: Running unit tests
         run: |
           cd src/
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m unittest discover -v -s tests
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m unittest discover -v -s tests
 
   DEV_deployment:
     runs-on: ubuntu-latest
@@ -25,17 +25,17 @@ jobs:
       - name: Set up conda environment
         run: conda env create -f ./environment.yml
       - name: Update pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade pip
       - name: Install dependencies with pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install -r requirements.txt
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install -r requirements.txt
       - name: Build package
         run: |
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade build
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m build
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade build
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m build
       - name: Upload to PyPi
         run: |
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade twine
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade twine
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
 
   Testing_DEV_deployment:
     runs-on: ubuntu-latest
@@ -45,15 +45,15 @@ jobs:
       - name: Set up conda environment
         run: conda env create -f ./environment.yml
       - name: Update pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade pip
       - name: Install dependencies with pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install -r requirements.txt
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install -r requirements.txt
       - name: Install revenue maximization ranking from TestPyPi
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --index-url https://test.pypi.org/simple/ revenue-maximization-ranking
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --index-url https://test.pypi.org/simple/ revenue-maximization-ranking
       - name: Install JuyterLab
-        run: conda install -n revenue_maximization_ranking jupyterlab -c conda-forge -y
+        run: conda install -n revenue-maximization-ranking jupyterlab -c conda-forge -y
       - name: Run Jupyter Notebook
-        run: $CONDA/envs/revenue_maximization_ranking/bin/jupyter nbconvert --to notebook notebooks/uat_deployment_proof.ipynb --execute --inplace --allow-errors
+        run: $CONDA/envs/revenue-maximization-ranking/bin/jupyter nbconvert --to notebook notebooks/uat_deployment_proof.ipynb --execute --inplace --allow-errors
       - uses: stefanzweifel/git-auto-commit-action@v4
 
   PROD_deployment:
@@ -65,14 +65,14 @@ jobs:
       - name: Set up conda environment
         run: conda env create -f ./environment.yml
       - name: Update pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade pip
       - name: Install dependencies with pip
-        run: $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install -r requirements.txt
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install -r requirements.txt
       - name: Build package
         run: |
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade build
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m build
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade build
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m build
       - name: Upload to PyPi
         run: |
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m pip install --upgrade twine
-          $CONDA/envs/revenue_maximization_ranking/bin/python -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade twine
+          $CONDA/envs/revenue-maximization-ranking/bin/python -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
