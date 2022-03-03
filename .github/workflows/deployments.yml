@@ -11,6 +11,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up conda environment
         run: conda env create -f ./environment.yml
+      - name: Update pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install --upgrade pip
+      - name: Install dependencies with pip
+        run: $CONDA/envs/revenue-maximization-ranking/bin/python -m pip install -r requirements.txt
       - name: Running unit tests
         run: |
           cd src/
