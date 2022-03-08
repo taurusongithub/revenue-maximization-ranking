@@ -41,7 +41,7 @@ Functions
 """
 
 from copy import copy
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Union
 from revenue_maximization_ranking.cascade\
                                  .fixed_attention import optimal_rankings
 from revenue_maximization_ranking._types import DistributionLike
@@ -95,8 +95,9 @@ def best_x(products: Dict, g: DistributionLike, capacity: int,
     return best_x_value, rankings[best_x_value]
 
 
-def best_x_full_capacity(products: Dict, g: DistributionLike,
-                         capacity: int) -> List:
+def best_x_full_capacity(products: Dict, g: DistributionLike, capacity: int,
+                         show_xs: bool = True) -> Union[List,
+                                                        Tuple[List, List]]:
     """It completes the best-x strategy up to full capacity.
 
     Since the "best" x can be much smaller than the capacity M this
@@ -120,6 +121,8 @@ def best_x_full_capacity(products: Dict, g: DistributionLike,
             Distribution of attention spans.
         capacity: int
             Maximum number of items that the retailer can display.
+        show_xs: bool, optional, default: False
+            Should the function return the list of "best-x"'s chosen?
 
     Returns
     -------
@@ -128,10 +131,13 @@ def best_x_full_capacity(products: Dict, g: DistributionLike,
             Length of this ranking is min(M, max_x) where max_x is the
             maximum attention considered by the distribution of
             attention spans.
+        best_xs: list, optional
+            List of xs' values chosen by the algorithm.
     """
 
     offset = 0
     full_ranking = []
+    best_xs = []
     n_items_to_rank = min(len(products), capacity)
     prods = copy(products)
     while n_items_to_rank > offset:
@@ -144,5 +150,10 @@ def best_x_full_capacity(products: Dict, g: DistributionLike,
                  if k not in [name for name, _ in ranking]}
         offset += x
         full_ranking += ranking
+        if show_xs:
+            best_xs.append(x)
+
+    if show_xs:
+        return full_ranking, best_xs
 
     return full_ranking
