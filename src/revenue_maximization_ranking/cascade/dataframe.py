@@ -13,7 +13,7 @@ Functions
 """
 
 import pandas as pd
-from typing import Dict, List
+from typing import Dict, List, Union, Tuple
 from revenue_maximization_ranking.cascade.best_x import best_x_full_capacity
 from revenue_maximization_ranking.cascade\
                                  .revenue import expected_revenue as exp_rev
@@ -76,7 +76,9 @@ def ranking_as_column(ranking: List) -> pd.Series:
 
 
 def full_best_x(df: pd.DataFrame, revenue_col: str, probability_col: str,
-                g: DistributionLike, capacity: int = 0) -> pd.Series:
+                g: DistributionLike, capacity: int = 0,
+                show_xs: bool = False) -> Union[pd.Series,
+                                                Tuple[pd.Series, List]]:
     """Implements the full_best_x ranking on a dataframe.
 
     Parameters
@@ -90,22 +92,31 @@ def full_best_x(df: pd.DataFrame, revenue_col: str, probability_col: str,
             product.
         g: DistributionLike
             Distribution of attention spans.
-        capacity:
+        capacity: int, default 0
             Maximum number of products that the retailer can display.
+        show_xs: bool, default False
+            List of xs' values chosen by the algorithm.
 
     Returns
     -------
         rank_column: pandas.Series
             A pandas series with the ranking of each product. The index
             will be the same as the df index.
+        best_xs: list, optional
+            List of xs' values chosen by the algorithm.
     """
 
     if capacity < 1:
         capacity = df.shape[0]
 
     products = load_dataframe(df, revenue_col, probability_col)
-    rank = best_x_full_capacity(products, g, capacity)
-    return ranking_as_column(rank)
+    algorithm = best_x_full_capacity(products, g, capacity, show_xs=show_xs)
+    if show_xs:
+        rank_column = ranking_as_column(algorithm[0])
+        best_xs = algorithm[1]
+        return rank_column, best_xs
+
+    return ranking_as_column(algorithm)
 
 
 def expected_revenue(df: pd.DataFrame, revenue_col: str, probability_col: str,
